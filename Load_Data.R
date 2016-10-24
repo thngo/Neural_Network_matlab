@@ -32,3 +32,19 @@ str(goodgrant_dictionary) #Learn its structure
 
 ####CREATING DESIRED OUTPUT FILES####
 goodgrant_dictionary_criteria2 <- goodgrant_dictionary[c(8,11,15,20,25,118,152,166,267,270,272,274,279,281,283,285,290,292,293,294,295,296:329),] #substracting the rows (of picked criteria)
+
+##################################################################################################################
+####TURNING DATA TYPE INTO NUMERIC TYPE####
+
+goodgrant_score <- transform(goodgrant_score, RELAFFIL = as.numeric(RELAFFIL))
+goodgrant_score <- transform(goodgrant_score, SATVR25 = as.numeric(SATVR25))
+
+
+
+for(x in seq(1,length(colnames(goodgrant_score)))){
+  names <- colnames(goodgrant_score[x])
+  goodgrant_score <- transform(goodgrant_score, names = as.numeric(names))}
+
+library(dplyr)
+goodgrant_score %>% 
+  mutate_if(is.character, funs(as.numeric(as.character(.))))
