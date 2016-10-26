@@ -17,6 +17,10 @@
 
 #install.packages("readxl")
 #library(readxl)
+
+#install.packages("xlsx")
+#library(xlsx)
+
 ####end####
 
 ####READ MCM DATA FILE####
@@ -44,7 +48,11 @@ str(goodgrant_dictionary) #Learn its structure
       colnames(goodgrant_score)[i] <- foil$NAME
     }
   }
-  
+  #write/export
+write.csv(goodgrant_score, file = "C:/Users/Tra/Desktop/goodgrant_score.csv", quote = FALSE)
+#or
+write.xlsx(goodgrant_score, file = "C:/Users/Tra/Desktop/goodgrant_score.xls", sheetName="Sheet1", col.names=TRUE, row.names=TRUE, append=FALSE, showNA=TRUE) #non-functional as error with rJava
+
 ##################################################################################################################
 ####CREATING DESIRED OUTPUT FILES####
 goodgrant_dictionary_criteria2 <- goodgrant_dictionary[c(8,11,15,20,25,118,152,166,267,270,272,274,279,281,283,285,290,292,293,294,295,296:329),] #substracting the rows (of picked criteria)
