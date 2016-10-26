@@ -30,8 +30,25 @@ str(goodgrant_score) #Learn its structure
 goodgrant_dictionary <- read_excel("C:/Users/Tra/Desktop/GoodGrantData/Problem_C__CollegeScorecardDataDictionary_09082015.xlsx")
 str(goodgrant_dictionary) #Learn its structure
 
+####REPLACING VARIABLE NAME IN GOODGRANT SCORING METRIC WITH REAL MEANINGFUL NAME FROM DICTIONARY####
+  
+  goodgrant_dictionary_short <- goodgrant_dictionary[,c("NAME OF DATA ELEMENT", "VARIABLE NAME")] #creating dataframe with just Variable name and meaning
+  goodgrant_dictionary_short <- goodgrant_dictionary_short[rowSums(is.na(goodgrant_dictionary_short)) != ncol(goodgrant_dictionary_short),] #eliminating empty rows
+  colnames(goodgrant_dictionary_short)[colnames(goodgrant_dictionary_short)== "VARIABLE NAME"] <- "VARIABLE" #rename column
+  colnames(goodgrant_dictionary_short)[colnames(goodgrant_dictionary_short)== "NAME OF DATA ELEMENT"] <- "NAME" #rename column
+  
+  for (i in 1:ncol(goodgrant_score)) {
+    if (colnames(goodgrant_score[i]) %in% goodgrant_dictionary_short$VARIABLE) {
+      foil_name <- colnames(goodgrant_score[i])
+      foil <- goodgrant_dictionary_short[goodgrant_dictionary_short$VARIABLE == foil_name,]
+      colnames(goodgrant_score)[i] <- foil$NAME
+    }
+  }
+  
+##################################################################################################################
 ####CREATING DESIRED OUTPUT FILES####
 goodgrant_dictionary_criteria2 <- goodgrant_dictionary[c(8,11,15,20,25,118,152,166,267,270,272,274,279,281,283,285,290,292,293,294,295,296:329),] #substracting the rows (of picked criteria)
+
 
 ##################################################################################################################
 ####TURNING DATA TYPE INTO NUMERIC TYPE####
