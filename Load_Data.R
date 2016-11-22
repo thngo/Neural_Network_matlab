@@ -35,7 +35,28 @@ goodgrant_dictionary <- read_excel("C:/Users/Tra/Desktop/GoodGrantData/Problem_C
 str(goodgrant_dictionary) #Learn its structure
 
 ####REPLACING VARIABLE NAME IN GOODGRANT SCORING METRIC WITH REAL MEANINGFUL NAME FROM DICTIONARY####
+ 
+####WITH DEVELOPER FRIENDLY NAMES####
+  goodgrant_dictionary_short <- goodgrant_dictionary[,c("developer-friendly name", "VARIABLE NAME")] #creating dataframe with just Variable name and meaning
+  goodgrant_dictionary_short <- goodgrant_dictionary_short[rowSums(is.na(goodgrant_dictionary_short)) != ncol(goodgrant_dictionary_short),] #eliminating empty rows
+  colnames(goodgrant_dictionary_short)[colnames(goodgrant_dictionary_short)== "VARIABLE NAME"] <- "VARIABLE" #rename column
+  colnames(goodgrant_dictionary_short)[colnames(goodgrant_dictionary_short)== "developer-friendly name"] <- "NAME" #rename column
   
+  for (i in 1:ncol(goodgrant_score)) {
+    if (colnames(goodgrant_score[i]) %in% goodgrant_dictionary_short$VARIABLE) {
+      foil_name <- colnames(goodgrant_score[i])
+      foil <- goodgrant_dictionary_short[goodgrant_dictionary_short$VARIABLE == foil_name,]
+      colnames(goodgrant_score)[i] <- foil$NAME
+    }
+  }
+
+  score_name <- c(colnames(goodgrant_score))
+  print <- data.frame(score_name)
+  write.table(print, file = "C:/Users/Tra/Desktop/score_name.csv", eol = "\n", sep = " ", quote = FALSE) #print names in rows, need to be transposed
+  
+
+####WITH MEANINGFUL-FULL NAMES####
+
   goodgrant_dictionary_short <- goodgrant_dictionary[,c("NAME OF DATA ELEMENT", "VARIABLE NAME")] #creating dataframe with just Variable name and meaning
   goodgrant_dictionary_short <- goodgrant_dictionary_short[rowSums(is.na(goodgrant_dictionary_short)) != ncol(goodgrant_dictionary_short),] #eliminating empty rows
   colnames(goodgrant_dictionary_short)[colnames(goodgrant_dictionary_short)== "VARIABLE NAME"] <- "VARIABLE" #rename column
@@ -48,7 +69,7 @@ str(goodgrant_dictionary) #Learn its structure
       colnames(goodgrant_score)[i] <- foil$NAME
     }
   }
-  #write/export
+  #write/export - not working yet because /r and /n in values => make write.csv not exportable
 write.csv(goodgrant_score, file = "C:/Users/Tra/Desktop/goodgrant_score.csv", quote = FALSE)
 #or
 write.xlsx(goodgrant_score, file = "C:/Users/Tra/Desktop/goodgrant_score.xls", sheetName="Sheet1", col.names=TRUE, row.names=TRUE, append=FALSE, showNA=TRUE) #non-functional as error with rJava
