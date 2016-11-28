@@ -75,6 +75,23 @@ write.csv(goodgrant_score, file = "C:/Users/Tra/Desktop/goodgrant_score.csv", qu
 write.xlsx(goodgrant_score, file = "C:/Users/Tra/Desktop/goodgrant_score.xls", sheetName="Sheet1", col.names=TRUE, row.names=TRUE, append=FALSE, showNA=TRUE) #non-functional as error with rJava
 
 ##################################################################################################################
+######SPLITTING PUBLIC/PRIVATE INSTITUTE######
+  goodgrant_score_public <- goodgrant_score[goodgrant_score$ownership == "1", ]
+  goodgrant_score_public <- goodgrant_score_public[,grepl("private",colnames(test_df)) == FALSE] #erase column that include "private"// include only columes that doesn't include "private"
+  
+  goodgrant_score_private_non <- goodgrant_score[goodgrant_score$ownership == "2", ]
+  goodgrant_score_private_non <- goodgrant_score_private_non[,grepl("public",colnames(test_df)) == FALSE]  #erase column that include "public"// include only columes that doesn't include "public"
+  
+  goodgrant_score_private_for <- goodgrant_score[goodgrant_score$ownership == "3", ]
+  goodgrant_score_private_for <- goodgrant_score_private_for[,grepl("public",colnames(test_df)) == FALSE] #erase column that include "public"// include only columes that doesn't include "public"
+  
+  #test_df <- goodgrant_score_private_non[,]
+  #test_df <- test_df[,grepl("public",colnames(test_df)) == FALSE]
+##################################################################################################################
+
+
+
+##################################################################################################################
 ####CREATING DESIRED OUTPUT FILES####
 goodgrant_dictionary_criteria2 <- goodgrant_dictionary[c(8,11,15,20,25,118,152,166,267,270,272,274,279,281,283,285,290,292,293,294,295,296:329),] #substracting the rows (of picked criteria)
 
