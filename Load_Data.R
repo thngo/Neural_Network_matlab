@@ -88,8 +88,27 @@ write.xlsx(goodgrant_score, file = "C:/Users/Tra/Desktop/goodgrant_score.xls", s
   #test_df <- goodgrant_score_private_non[,]
   #test_df <- test_df[,grepl("public",colnames(test_df)) == FALSE]
 ##################################################################################################################
+### Doc: https://cran.r-project.org/web/packages/R.matlab/R.matlab.pdf
+# library(R.matlab)
+ writeMat("goodgrant_score_public.mat", labpcexport = goodgrant_score_public) #write to matlab
+ writeMat("goodgrant_score_private_non.mat", labpcexport = goodgrant_score_private_non) #write to matlab
+ writeMat("goodgrant_score_private_for.mat", labpcexport = goodgrant_score_private_for) #write to matlab
+ 
+#### writeMat is hard encoded in field of length of 32 int 
+#=> fields with name longer than that gives error
+# Need to scan for long names and shorten them
 
+for (i in 1:ncol(goodgrant_score_private_for)) {
+  if (nchar(colnames(goodgrant_score_private_for[i])) > 32) { #check if the column name has more than 32 char
+    substring_names <- substring(colnames(goodgrant_score_private_for[i]), first = 1, last = 31) #make colname has only 31 char
+    colnames(goodgrant_score_private_for[i]) <- substring_names
+   ###Other non-functional alternatives
+    #substring_names <- substring(colnames(goodgrant_score_private_for[i]), first = 1, last = 31)
+    #colnames(goodgrant_score_private_for[i]) <- substring_names
+    #goodgrant_score_private_for <- goodgrant_score_private_for[,substring(colnames(goodgrant_score_private_for[i]), first = 1, last = 31)] 
+    #substring(colnames(goodgrant_score_private_for[i]), first = 1, last = 31) <- colnames(goodgrant_score_private_for[i])
 
+  }}  
 
 ##################################################################################################################
 ####CREATING DESIRED OUTPUT FILES####
